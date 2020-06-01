@@ -1,4 +1,34 @@
-var todayDay = document.getElementById('todayDay');
+switch (new Date().getDay()) {
+    case 0:
+        day = "Sunday";
+        break;
+    case 1:
+        day = "Monday";
+        break;
+    case 2:
+        day = "Tuesday";
+        break;
+    case 3:
+        day = "Wednesday";
+        break;
+    case 4:
+        day = "Thursday";
+        break;
+    case 5:
+        day = "Friday";
+        break;
+    case 6:
+        day = "Saturday";
+}
 
-console.log(typeof(todayDay))
-document.getElementById('tester').innerHTML = todayDay;
+
+function setToday(s, v) {
+    for ( var i = 0; i < s.options.length; i++ ) {
+        if ( s.options[i].text == v ) {
+            s.options[i].selected = true;
+            return;
+        }
+    }
+}
+
+setToday(document.getElementById('theDay'), day);
