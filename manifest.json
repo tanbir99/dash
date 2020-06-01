@@ -14,7 +14,7 @@
     },
     "browser_action": {
       "default_icon": "/images/LogoMakr_3aljcG.png",
-      "default_popup": "popup.html",
+      "default_popup": "/html/popup.html",
       "default_title": "dash!"
     },
 
