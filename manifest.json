@@ -17,6 +17,9 @@
       "default_popup": "/html/popup.html",
       "default_title": "dash!"
     },
+    "options_page": "/html/options.html",
+
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com/; object-src 'self'",
 
     "manifest_version": 2
   }
