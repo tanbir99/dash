@@ -3,18 +3,45 @@ var formText = '<div class="new_form"> <br><form> <label for="a">Class:</label><
 
 
 $(document).ready(function() {
+    restoreOptions()
     addSections()
     removeSections()
-    restoreOptions()
-    chrome.storage.sync.get(['savedScheds'], function(result) {
-        console.log(result.savedScheds[0])
+    chrome.storage.sync.get(['restoreScheds'], function(result) {
+        console.log(result.restoreScheds)
     })
 })
 
 
+/*Brings Back Original Settings Upon Refresh*/
+function restoreOptions() {
+    var days = ["#sunday", "#monday", "#tuesday", "#wednesday", "#thursday", "#friday", "#saturday"]
+    var x = 0
+    chrome.storage.sync.get(['restoreScheds'], function(result) {
+        result.restoreScheds.forEach(selectedDay => {
+            timesAppended = 0
+            while (timesAppended != selectedDay.length) {
+               $(formText).appendTo(days[x])
+               /*var selects the form that was just created, other lines add information*/
+               var selectedSection = document.querySelectorAll(days[x] + ' form')[timesAppended]
+               selectedSection.querySelector("#section_name").value = selectedDay[timesAppended].section_name
+               selectedSection.querySelector("#begin_hour").value = selectedDay[timesAppended].begin_hour
+               selectedSection.querySelector("#begin_minutes").value = selectedDay[timesAppended].begin_minutes
+               selectedSection.querySelector("#begin_am_pm").value = selectedDay[timesAppended].begin_am_pm
+               selectedSection.querySelector("#end_hour").value = selectedDay[timesAppended].end_hour
+               selectedSection.querySelector("#end_minutes").value = selectedDay[timesAppended].end_minutes
+               selectedSection.querySelector("#end_am_pm").value = selectedDay[timesAppended].end_am_pm
+               timesAppended++
+            }
+           x++
+        })
+    });
+
+}
+
+
 /*Add and Remove Class Buttons*/
-/*Add*/
 function addSections() {
+    /*Add Buttons*/
     $("#sunday_add_section").click(function(e){
         e.preventDefault();
         $(formText).appendTo("#sunday");
@@ -44,8 +71,9 @@ function addSections() {
         $(formText).appendTo("#saturday");
     })
 }
-/*Remove*/
+
 function removeSections() {
+    /*Remove Buttons*/
     $(".day").on("click", ".remove_section", function(e) {
         e.preventDefault();
         $(this).parent('div').remove();
@@ -55,7 +83,17 @@ function removeSections() {
 
 /*Save Button, Store Inputs as Arrays*/
 function saveSettings() {
-    var all_scheds = []
+    infoGetter()
+    twentyFour(allScheds)
+    chrome.storage.sync.set({restoreScheds: allScheds})
+    chrome.storage.sync.set({savedScheds: allScheds24})
+}
+
+document.getElementById('save').addEventListener('click', saveSettings);
+
+function infoGetter() {
+    /*Retrieves info from all forms and save into array allScheds*/
+    allScheds = []
     document.querySelectorAll(".day").forEach(day => {
         let daily_sched = []
         day.querySelectorAll(".new_form").forEach(section => {
@@ -65,46 +103,65 @@ function saveSettings() {
             })
             daily_sched.push(obj)
         })
-        all_scheds.push(daily_sched)
+        allScheds.push(daily_sched)
     })
-    chrome.storage.sync.set({savedScheds: all_scheds})
-    console.log(all_scheds)
+    /*chrome.storage.sync.set({restoreScheds: allScheds})*/
+    console.log(allScheds)
 }
 
-document.getElementById('save').addEventListener('click', saveSettings);
-
-
-/*Brings Back Original Settings Upon Refresh*/
-function restoreOptions() {
-    var days = ["#sunday", "#monday", "#tuesday", "#wednesday", "#thursday", "#friday", "#saturday"]
-    var x = 0
-    chrome.storage.sync.get(['savedScheds'], function(result) {
-        result.savedScheds.forEach(selectedDay => {
-            timesAppended = 0
-            while (timesAppended != selectedDay.length) {
-               $(formText).appendTo(days[x])
-               console.log(document.querySelectorAll(days[x] + ' form')[timesAppended].querySelector("#begin_hour"))
-               /*var selects the form that was just created, other lines add information*/
-               var selectedSection = document.querySelectorAll(days[x] + ' form')[timesAppended]
-               selectedSection.querySelector("#section_name").value = selectedDay[timesAppended].section_name
-               selectedSection.querySelector("#begin_hour").value = selectedDay[timesAppended].begin_hour
-               selectedSection.querySelector("#begin_minutes").value = selectedDay[timesAppended].begin_minutes
-               selectedSection.querySelector("#begin_am_pm").value = selectedDay[timesAppended].begin_am_pm
-               selectedSection.querySelector("#end_hour").value = selectedDay[timesAppended].end_hour
-               selectedSection.querySelector("#end_minutes").value = selectedDay[timesAppended].end_minutes
-               selectedSection.querySelector("#end_am_pm").value = selectedDay[timesAppended].end_am_pm
-               timesAppended++
+function twentyFour(originalSched) {
+    /*Convert all_sched to 24-hour format*/
+    allScheds24 = []
+    originalSched.forEach(day => {
+        let newDailySched = []
+        day.forEach(section => {
+            let obj = {}
+            obj["name"] = section.section_name
+            obj["newBeginMinute"] = parseInt(section.begin_minutes)
+            obj["newEndMinute"] = parseInt(section.end_minutes)
+            if (section.begin_am_pm == 'AM') {
+                if (section.begin_hour == 12) {
+                    obj["newBeginHour"] = 00
+                } else {
+                    obj["newBeginHour"] = parseInt(section.begin_hour)
+                }
+            } else {
+                if (section.begin_hour == 12) {
+                    obj["newBeginHour"] = 12
+                } else {
+                    obj["newBeginHour"] = 12 + parseInt(section.begin_hour)
+                }
             }
-           x++
+            if (section.end_am_pm == 'AM') {
+                if (section.end_hour == 12) {
+                    obj["newEndHour"] = 00
+                } else {
+                    obj["newEndHour"] = parseInt(section.end_hour)
+                }
+            } else {
+                if (section.end_hour == 12) {
+                    obj["newEndHour"] = 12
+                } else {
+                    obj["newEndHour"] = 12 + parseInt(section.end_hour)
+                }
+            }
+            newDailySched.push(obj)
         })
-    });
-
+        allScheds24.push(newDailySched)
+    })
+    console.log(allScheds24)
 }
 
-function restoreOptions2() {
-    var place = 0
-    
-}
+
+
+
+
+
+
+
+
+
+
 
 
 /*==============================================*/
@@ -112,8 +169,8 @@ function restoreOptions2() {
 function tester () {
     console.log(document.querySelectorAll("form"))
     console.log(document.getElementsByClassName("sunday"))
-    chrome.storage.sync.get(['savedScheds'], function(d) {
-        console.log(d.savedScheds[0][0].begin_am_pm)
+    chrome.storage.sync.get(['restoreScheds'], function(d) {
+        console.log(d.restoreScheds[0][0].begin_am_pm)
     })
     console.log(document.querySelectorAll('#sunday form')[0]['begin_hour'])
     console.log(document.querySelectorAll('.new_form'))
