@@ -1,98 +1,79 @@
-//Time
-var timeNow = new Date();
-var dayNow = timeNow.getDay();
-var hourNow = timeNow.getHours();
-var minutesNow = timeNow.getMinutes();
-var secondsNow = timeNow.getSeconds();
-
-//Arrays for class times to be stored in milliseconds
-var monday = new Array()
+/* Set year, month */
+var dayMonthYear = new Date()
+var setDate = dayMonthYear.getDate()
+var setMonth = dayMonthYear.getMonth()
+var setYear = dayMonthYear.getYear()
 
 
-//Preselect today in dropdown menu
+
+
+chrome.storage.sync.get(['savedDay'], function (result) {
+    console.log(result.savedDay)
+    console.log(result.savedDay[3])
+    dayNow = result.savedDay[3]
+    console.log(dayNow)
+
+    document.getElementById('theDay')
+    setToday(document.getElementById('theDay'))
+    currentTime()
+    
+})
+
+
+/*Preselect today*/
 function setToday(days) {
-    for ( var i = 0; i < days.options.length; i++ ) {
-        if ( days.options[i].value == dayNow ) {
-            days.options[i].selected = true;
-            return;
+    for (var i = 0; i < days.options.length; i++) {
+        if (days.options[i].value == dayNow) {
+            days.options[i].selected = true
+            return
         }
     }
 }
 
-setToday(document.getElementById('theDay'));
-
-
-
-var mondaySched = [
-    { class1_end: 'TEST' ,
-      hour: 11,
-      minutes: 59,
-      ampm: 'PM'
-    },
-    { class1_start: 'STA 3155',
-      hour: 10,
-      minutes: 45,
-      ampm: "AM"
-    },
-    { class1_end: 'STA 3155' ,
-      hour: 12,
-      minutes: 00,
-      ampm: 'PM'
-    },
-    { class2_start: 'CIS 3400',
-      hour: 4,
-      minutes: 10,
-      ampm: 'PM'
-    },
-    {
-      class2_end: 'CIS 3400',
-      hour: 5,
-      minutes: 25,
-      ampm: 'PM'
-    },
-    { class3_start: 'POL 3362',
-      hour: 5,
-      minutes: 50,
-      ampm: 'PM'
-    },
-    { class3_end: 'POL 3362',
-      hour: 7,
-      minutes: 05,
-      ampm: 'PM'
-    }
-];
-
-
-
-
-
-
-
-function milliMaker(daySched) {
-    for (var i = 0; i < daySched.length; i++) {
-        if (daySched[i].ampm == "AM") {
-            if (daySched[i].hour == 12) {
-                monday.push(daySched[i].minutes * 60000)
-            } else {
-                monday.push(((daySched[i].hour * 60) + daySched[i].minutes) * 60000 ) ;
-            }
-        } else {
-            if (daySched[i].hour == 12) {
-                monday.push((720 + daySched[i].minutes) * 60000)
-            } else {
-                monday.push((660 + (daySched[i].hour * 60) + daySched[i].minutes) * 60000 ) ; 
-            }
-        }
-    }
+/*Time*/
+function currentTime() {
+    secondMinuteHour = new Date()
+    hourNow = secondMinuteHour.getHours()
+    minutesNow = secondMinuteHour.getMinutes()
+    secondsNow = secondMinuteHour.getSeconds()
+    currentMinute = (hourNow * 60) + minutesNow
+    checkTimes()
+    var t = setTimeout(currentTime, 60000);
+    console.log(hourNow, minutesNow, secondsNow)
 }
 
 
-milliMaker(mondaySched)
+function checkTimes(day) {
+    console.log("its running")
+    document.getElementById('sec').textContent = secondsNow
+    chrome.storage.sync.get(['savedScheds'], function (result) {
+        let chosenDay = result.savedScheds[dayNow]
+        for (i = 0; i < chosenDay.length; ++i) {
+            if ((currentMinute >= chosenDay[i].beginTimeMinutes) && (currentMinute <= chosenDay[i].endTimeMinutes)) {
+                document.getElementById('className').textContent = chosenDay[i].name
+                document.getElementById('minutesIn').textContent = currentMinute - chosenDay[i].beginTimeMinutes
+                document.getElementById('minutesLeft').textContent = chosenDay[i].endTimeMinutes - currentMinute
+            }
+            else if ((currentMinute > chosenDay[i].endTimeMinutes) && (currentMinute < chosenDay[i+1].beginTimeMinutes)) {
+                document.getElementById('className').textContent = "No Class Currently"
+                document.getElementById('minutesIn').textContent = currentMinute - chosenDay[i].endTimeMinutes
+                document.getElementById('minutesLeft').textContent = chosenDay[i+1].beginTimeMinutes - currentMinute
+            }
+        }
+    })
+    console.log(secondsNow)
+}
 
-console.log(monday)
 
+$('#theDay').on('change',function () {
+    dayNow = $(this).val()
+    console.log("changed")
+    console.log(dayNow)
+    console.log([setYear, setMonth, setDate])
 
-
-
-
-console.log(hourNow, minutesNow, secondsNow)
+    chrome.storage.sync.set( {savedDay: [setYear, setMonth, setDate, parseInt(dayNow, 10)]} )
+    checkTimes()
+    chrome.runtime.sendMessage( {status: "changed"}, function(response) {
+        console.log(response.success)
+    })
+});
