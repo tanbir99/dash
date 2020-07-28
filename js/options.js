@@ -95,21 +95,21 @@ function infoGetter() {
     /*Retrieves info from all forms and save into array allScheds*/
     allScheds = []
     document.querySelectorAll(".day").forEach(day => {
-        let daily_sched = []
+        let dailySched = []
         day.querySelectorAll(".new_form").forEach(section => {
             let obj = {}
             section.querySelectorAll(".info").forEach(ele => {
                 obj[ele.id] = ele.value
             })
-            daily_sched.push(obj)
+            dailySched.push(obj)
         })
-        allScheds.push(daily_sched)
+        allScheds.push(dailySched)
     })
     console.log(allScheds)
 }
 
 function minuteConverter(originalSched) {
-    /*Convert all_sched to 24-hour format*/
+    /*Convert allScheds to 24-hour format*/
     minuteSched = []
     originalSched.forEach(day => {
         let newDailySched = []
@@ -164,11 +164,11 @@ function beforeAfterClass (daysClasses) {
         beforeClass["name"] = "No Class Yet!"
         beforeClass["beginTimeMinutes"] = 0000
         beforeClass["endTimeMinutes"] = daysClasses[0].beginTimeMinutes - 1
+        daysClasses.unshift(beforeClass)
         let afterClass = {}
-        afterClass["name"] = "Done For Today"
+        afterClass["name"] = "Done For Today!"
         afterClass["beginTimeMinutes"] = daysClasses[daysClasses.length - 1].endTimeMinutes + 1
         afterClass["endTimeMinutes"] = 1439
-        daysClasses.unshift(beforeClass)
         daysClasses.push(afterClass)
     }
 }
