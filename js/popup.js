@@ -1,12 +1,13 @@
 /* Set year, month */
 var dayMonthYear = new Date()
 var setDate = dayMonthYear.getDate()
+var setDay = dayMonthYear.getDay()
 var setMonth = dayMonthYear.getMonth()
 var setYear = dayMonthYear.getYear()
 
 
 
-
+/*
 chrome.storage.sync.get(['savedDay'], function (result) {
     console.log(result.savedDay)
     console.log(result.savedDay[3])
@@ -18,7 +19,19 @@ chrome.storage.sync.get(['savedDay'], function (result) {
     currentTime()
     
 })
+*/
 
+chrome.runtime.sendMessage( {status: "opened"}, function(response) {
+    console.log(response.openerInfo)
+    if (response.openerInfo) {
+        dayNow = response.openerInfo[3]
+    } else {
+        dayNow = setDay
+    }
+    console.log(dayNow)
+    setToday(document.getElementById('theDay'))
+    currentTime()
+})
 
 /*Preselect today*/
 function setToday(days) {
@@ -30,6 +43,8 @@ function setToday(days) {
     }
 }
 
+var t
+
 /*Time*/
 function currentTime() {
     secondMinuteHour = new Date()
@@ -38,13 +53,13 @@ function currentTime() {
     secondsNow = secondMinuteHour.getSeconds()
     currentMinute = (hourNow * 60) + minutesNow
     checkTimes()
-    var t = setTimeout(currentTime, 60000);
+    t = setTimeout(currentTime, 60000);
     console.log(hourNow, minutesNow, secondsNow)
 }
 
 
 function checkTimes(day) {
-    console.log("its running")
+    console.log("checkTimes running")
     document.getElementById('sec').textContent = secondsNow
     chrome.storage.sync.get(['savedScheds'], function (result) {
         let chosenDay = result.savedScheds[dayNow]
@@ -66,14 +81,16 @@ function checkTimes(day) {
 
 
 $('#theDay').on('change',function () {
-    dayNow = $(this).val()
+    dayNow = parseInt($(this).val(), 10)
     console.log("changed")
-    console.log(dayNow)
-    console.log([setYear, setMonth, setDate])
-
-    chrome.storage.sync.set( {savedDay: [setYear, setMonth, setDate, parseInt(dayNow, 10)]} )
-    checkTimes()
-    chrome.runtime.sendMessage( {status: "changed"}, function(response) {
-        console.log(response.success)
+    newInfo = [setYear, setMonth, setDate, dayNow]
+    chrome.storage.sync.set( {savedDay: newInfo} , function () {
+        console.log('storage is set to ' + newInfo)
     })
+    clearTimeout(t)
+    currentTime()
+    chrome.runtime.sendMessage( {status: "changed"}, function(response) {
+        console.log(response.backChanged)
+    })
+
 });
