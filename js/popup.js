@@ -7,20 +7,6 @@ var setYear = dayMonthYear.getYear()
 
 
 
-/*
-chrome.storage.sync.get(['savedDay'], function (result) {
-    console.log(result.savedDay)
-    console.log(result.savedDay[3])
-    dayNow = result.savedDay[3]
-    console.log(dayNow)
-
-    document.getElementById('theDay')
-    setToday(document.getElementById('theDay'))
-    currentTime()
-    
-})
-*/
-
 chrome.runtime.sendMessage( {status: "opened"}, function(response) {
     console.log(response.openerInfo)
     if (response.openerInfo) {
