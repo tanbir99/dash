@@ -4,7 +4,7 @@
     "description": "School planner and class reminder.",
     "background": {
       "scripts": ["/js/background.js"],
-      "persistent": false
+      "persistent": true
     },
     "icons": {
       "16": "/images/LogoMakr_3aljcG.png",
