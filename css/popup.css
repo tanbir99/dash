@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    min-width: 300px;
+    padding: 0;
+    margin: 0;
+    color: #5c007a;
+}
+
+.popupHeader {
+    min-height: 50px;
+    background-color: #5c007a;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.popupHeader__logo {
+    width: 92px;
+    height: 40.71px;
+    background-repeat: no-repeat;
+    background-image: url(../images/LogoMakr_1R5WR7.png);
+}
+
+.todayIs {
+    background-color: #8e24aa;
+    min-height: 30px;
+    line-height: 30px;
+}
+
+.dayLabel {
+    color: #fff;
+}
+
+#theDay {
+    color: #8e24aa;
+    position: relative;
+    cursor: pointer;
+}
+
+th {
+    font-size: 30px;
+}
+
+.numbers {
+    font-size: 30px;
+}

@@ -46,7 +46,6 @@ function currentTime() {
 
 function checkTimes(day) {
     console.log("checkTimes running")
-    document.getElementById('sec').textContent = secondsNow
     chrome.storage.sync.get(['savedScheds'], function (result) {
         let chosenDay = result.savedScheds[dayNow]
         for (i = 0; i < chosenDay.length; ++i) {

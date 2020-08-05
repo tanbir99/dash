@@ -1,42 +1,51 @@
 <!DOCTYPE html>
 
+<link type="text/css" rel="stylesheet" href="/css/popup.css">
 
-<center>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+</style>
 
-  <label for="theDay">Today is:</label>
+<body>
 
-  <select name="theDay" id="theDay">
-    <option value="0">Sunday</option>
-    <option value="1">Monday</option>
-    <option value="2">Tuesday</option>
-    <option value="3">Wednesday</option>
-    <option value="4">Thursday</option>
-    <option value="5">Friday</option>
-    <option value="6">Saturday</option>
-  </select>
+<div class="popupHeader">
+  <div class="popupHeader__logo"><img src="/images/LogoMakr_5GxGCt.png" width="92px" height="40.71px"></div>
+  <!--<div class="popupHeader-settingsBtn"><a href=""</button></div>-->
+</div>
 
+<div class="todayIs">
+  <center>
+  <label for="theDay" class="dayLabel">Today is:</label>
+    <select name="theDay" id="theDay">
+      <option value="0">Sunday</option>
+      <option value="1">Monday</option>
+      <option value="2">Tuesday</option>
+      <option value="3">Wednesday</option>
+      <option value="4">Thursday</option>
+      <option value="5">Friday</option>
+      <option value="6">Saturday</option>
+    </select>
+  </center>
+</div>
 
-</center>
-
-
-<table cellspacing="3" id="timeDisplay" border="1" width="100%">
+<table cellspacing="3" id="timeDisplay" width="100%" border-style="solid">
   <tr>
-    <td id="className" width="50%" align="center" colspan="2">
+    <th id="className" width="50%" align="center" colspan="2">
     <font>Test</font>
-    </td>
+    </th>
   </tr>
-  <tr>
+  <tr class="minutes">
     <td align="center">Minutes In</td>
     <td align="center">Minutes Left</td>
   </tr>
-  <tr>
+  <tr class="numbers">
     <td align="center" id="minutesIn"></td>
     <td align="center" id="minutesLeft"></td>
   </tr>
-  <tr>
-    <td align="center" id="sec" colspan="2"></td>
-  </tr>
+  
 </table>
+</body>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/js/popup.js"></script>
