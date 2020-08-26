@@ -85,8 +85,8 @@ function removeSections() {
 function saveSettings() {
     infoGetter()
     minuteConverter(allScheds)
-    chrome.storage.sync.set({ restoreScheds: allScheds })
-    chrome.storage.sync.set({ savedScheds: minuteSched })
+    chrome.storage.sync.set({ restoreScheds: allScheds }) //saves times in original form, for restoreOptions()
+    chrome.storage.sync.set({ savedScheds: minuteSched }) //saves times in minutes, for checkTimes() in popup.js
 }
 
 document.getElementById('save').addEventListener('click', saveSettings);
@@ -152,7 +152,7 @@ function minuteConverter(originalSched) {
 
 
 function beforeAfterClass (daysClasses) {
-    /*Called in minuteConverter() to add time slots before and after class for each day*/
+    /*Called in minuteConverter() to add time slots before and after class in each array*/
     if (daysClasses.length == 0) {
         let noClass = {}
         noClass["name"] = "No Class Today!"

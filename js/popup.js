@@ -7,14 +7,13 @@ var setYear = dayMonthYear.getYear()
 
 
 
-chrome.runtime.sendMessage( {status: "opened"}, function(response) {
-    console.log(response.openerInfo)
+chrome.runtime.sendMessage( {status: "opened"}, function(response) { 
+    //sends message to background.js for the day to display, saved as dayNow
     if (response.openerInfo) {
         dayNow = response.openerInfo[3]
     } else {
         dayNow = setDay
     }
-    console.log(dayNow)
     setToday(document.getElementById('theDay'))
     currentTime()
 })
@@ -40,12 +39,11 @@ function currentTime() {
     currentMinute = (hourNow * 60) + minutesNow
     checkTimes()
     t = setTimeout(currentTime, 60000);
-    console.log(hourNow, minutesNow, secondsNow)
 }
 
 
 function checkTimes(day) {
-    console.log("checkTimes running")
+    //checks savedScheds array saved from options page, looping through it to find the current time slot
     chrome.storage.sync.get(['savedScheds'], function (result) {
         let chosenDay = result.savedScheds[dayNow]
         for (i = 0; i < chosenDay.length; ++i) {
@@ -61,11 +59,11 @@ function checkTimes(day) {
             }
         }
     })
-    console.log(secondsNow)
 }
 
 
 $('#theDay').on('change',function () {
+    //changes the day displayed, sends message to background.js to save preference until the end of the day
     dayNow = parseInt($(this).val(), 10)
     console.log("changed")
     newInfo = [setYear, setMonth, setDate, dayNow]
