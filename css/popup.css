@@ -27,6 +27,22 @@ body {
     background-image: url(../images/LogoMakr_1R5WR7.png);
 }
 
+.popupHeader__settings {
+    display: flex;
+}
+
+#settingsButton {
+    padding: 0;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5c007a;
+}
+
 .todayIs {
     background-color: #8e24aa;
     min-height: 30px;
@@ -39,6 +55,7 @@ body {
 
 #theDay {
     color: #8e24aa;
+    outline: none;
     position: relative;
     cursor: pointer;
 }

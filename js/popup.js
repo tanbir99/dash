@@ -6,7 +6,6 @@ var setMonth = dayMonthYear.getMonth()
 var setYear = dayMonthYear.getYear()
 
 
-
 chrome.runtime.sendMessage( {status: "opened"}, function(response) { 
     //sends message to background.js for the day to display, saved as dayNow
     if (response.openerInfo) {
@@ -17,6 +16,12 @@ chrome.runtime.sendMessage( {status: "opened"}, function(response) {
     setToday(document.getElementById('theDay'))
     currentTime()
 })
+
+
+$("#settingsButton").click(function() {
+    chrome.runtime.openOptionsPage()
+})
+
 
 /*Preselect today*/
 function setToday(days) {
@@ -58,6 +63,9 @@ function checkTimes(day) {
                 document.getElementById('minutesLeft').textContent = chosenDay[i+1].beginTimeMinutes - currentMinute
             }
         }
+        document.getElementById('minutesLabel-In').textContent = "Minutes In"
+        document.getElementById("MinutesLabel-Left").textContent = "Minutes Left"
+
     })
 }
 

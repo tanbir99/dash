@@ -10,7 +10,9 @@
 
 <div class="popupHeader">
   <div class="popupHeader__logo"><img src="/images/LogoMakr_5GxGCt.png" width="92px" height="40.71px"></div>
-  <!--<div class="popupHeader-settingsBtn"><a href=""</button></div>-->
+  <div class="popupHeader__settings">
+    <button id="settingsButton"><img src="/images/LogoMakr_4mv9Iv.png" width="29px" height="29px"></button>
+  </div>
 </div>
 
 <div class="todayIs">
@@ -31,12 +33,12 @@
 <table cellspacing="3" id="timeDisplay" width="100%" border-style="solid">
   <tr>
     <th id="className" width="50%" align="center" colspan="2">
-    <font></font>
+    <font>Please Open Extension Settings to Configure</font>
     </th>
   </tr>
-  <tr class="minutes">
-    <td align="center">Minutes In</td>
-    <td align="center">Minutes Left</td>
+  <tr class="minutesLabel">
+    <td align="center" id="minutesLabel-In"></td>
+    <td align="center" id="MinutesLabel-Left"></td>
   </tr>
   <tr class="numbers">
     <td align="center" id="minutesIn"></td>
