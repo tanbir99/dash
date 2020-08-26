@@ -172,29 +172,3 @@ function beforeAfterClass (daysClasses) {
         daysClasses.push(afterClass)
     }
 }
-
-
-
-
-
-
-
-
-
-/*==============================================*/
-/*Test button*/
-function tester () {
-    console.log(document.querySelectorAll("form"))
-    console.log(document.getElementsByClassName("sunday"))
-    chrome.storage.sync.get(['restoreScheds'], function (d) {
-        console.log(d.restoreScheds[0][0].begin_am_pm)
-    })
-    console.log(document.querySelectorAll('#sunday form')[0]['begin_hour'])
-    console.log(document.querySelectorAll('.new_form'))
-    x = 0
-
-
-
-}
-
-    document.getElementById('test').addEventListener('click', tester);
