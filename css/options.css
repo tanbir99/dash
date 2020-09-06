@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    min-width: 300px;
+    padding: 0;
+    margin: 0;
+    color: #5c007a;
+    text-align: center;
+}
+
+
+input {
+    color: #5c007a;
+}
